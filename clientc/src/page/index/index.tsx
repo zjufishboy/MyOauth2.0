@@ -7,7 +7,7 @@ import React, {
   const info={
     response_type:"code",                 //返回模式：code
     client_id:0,                          //Appid
-    redirect_uri:"http://www.fishstar.xyz:4003", //重定向uri
+    redirect_uri:"http://test.fishstar.xyz", //重定向uri
     scope:"read"                          //申请权限
   }
   const url=`http://account.fishstar.xyz?response_type=${info.response_type}&client_ID=${info.client_id}&redirect_uri=${info.redirect_uri}&scope=${info.scope}`

@@ -23,7 +23,7 @@ const getCode = () => getQueryVariable("code")
 export const Callback = () => {
     useEffect(() => {
         let code = getCode();
-        fetch("http://localhost:4004/", {
+        fetch("http://account.fishstar.xyz/", {
         headers: {
             'Content-Type': 'application/json'
           },
