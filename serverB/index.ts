@@ -8,7 +8,7 @@ const port=4004;
 const info={
     client_id:0,                          //Appid
     client_secret:"123456",
-    redirect_uri:"http://localhost:4003", //重定向uri
+    redirect_uri:"http://www.fishstar.xyz:4003", //重定向uri
   }
 const getUrl=(code:string)=>{
     return `http://localhost:4003/token?client_ID=${info.client_id}&client_secret=${info.client_secret}&code=${code}&redirect_uri=${info.redirect_uri}`;

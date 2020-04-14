@@ -65,7 +65,7 @@ const App = () => {
     console.log("start to auth");
     let info=getUrlParam()
     console.log(info)
-    fetch("http://localhost:4003", {
+    fetch("http://www.fishstar.xyz:4003", {
       headers: {
         'Content-Type': 'application/json'
       },
@@ -84,7 +84,7 @@ const App = () => {
       else{
         setIsErr(false);
         console.log(res)
-        window.location.href=`http://localhost:4002/callback?code=${res.code}`;
+        window.location.href=`http://test.fishstar.xyz/callback?code=${res.code}`;
       }
     })
   };

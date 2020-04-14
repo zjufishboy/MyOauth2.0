@@ -14,8 +14,8 @@ db.createCollection("Token")
 
 # 实例：
 # 这里的其他信息自己判断
-db.User.insert({uid:0,username:"游鱼星",password:"123456",signature:"the other info",...OtherInfo})
-db.App.insert({client_ID:0,client_secret:"123456",client_type:0,client_info:"the first app",...OtherAppInfo})
+db.User.insert({uid:0,username:"游鱼星",password:"123456",signature:"the other info",})
+db.App.insert({client_ID:0,client_secret:"123456",client_type:0,client_info:"the first app",})
 db.Token.insert({client_ID:0,uid:0,authCode:"123456",token:"123456",token_time:ISODate()})
 
 ```

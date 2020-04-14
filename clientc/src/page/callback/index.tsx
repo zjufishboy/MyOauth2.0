@@ -35,7 +35,7 @@ export const Callback = () => {
         .then(res=>res.json())
         .then((res:{status:boolean,token?:string})=>{if(res.status&&res.token){
             localStorage.setItem("token",res.token)
-            window.location.href="http://localhost:4002/"
+            window.location.href="http://test.fishstar.xyz/"
         }
         else{
             console.log("error!");
