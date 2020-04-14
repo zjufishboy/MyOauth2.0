@@ -121,7 +121,7 @@ const App = () => {
       <button onClick={login} className="button">
         登录
       </button>
-      {isErr&&<div>登录错误</div>}
+      {isErr&&<div style={{fontSize:"0.14rem",color:"red"}}>登录错误</div>}
     </div>
    </div>
   );
