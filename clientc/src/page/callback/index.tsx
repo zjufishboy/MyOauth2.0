@@ -23,7 +23,7 @@ const getCode = () => getQueryVariable("code")
 export const Callback = () => {
     useEffect(() => {
         let code = getCode();
-        fetch("http://account.fishstar.xyz/", {
+        fetch("http://www.fishstar.xyz:4004/", {
         headers: {
             'Content-Type': 'application/json'
           },
