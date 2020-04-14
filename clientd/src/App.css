@@ -1,11 +1,53 @@
 .App{
   display: flex;
   flex-direction: column;
+  justify-content: start;
+  align-items: center;
+
+  width:4.8rem;
+  height:3.2rem;
+
+  background-color: white;
+  border-radius: 0.4rem;
+}
+.AppOutSide{
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 
   width:100vw;
   height:100vh;
+  background-image: url("//image.wjx.com/images/newimg/register-login/bacg.jpg");
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
 
-  background-color: pink;
+.inputs{
+  padding-left:0.42rem;
+  margin:0.1rem 0;
+  width: 3.16rem;
+  height:0.42rem;
+  border-radius: 0.21rem;
+  border: 1px solid #e6e6e6;
+  outline: none;
+}
+
+.inputs:focus{
+  border-color: #fa911e;
+}
+.button{
+  width: 3.6rem;
+  height:0.42rem;
+  background-color: #fa911e;
+  border-radius: 0.21rem;
+  border: none;
+  color:white;
+  font-size: 0.2rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+.button:hover{
+  background-color: #f08200;
 }

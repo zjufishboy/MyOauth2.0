@@ -101,24 +101,29 @@ const App = () => {
       );
   };
   return (
-    <div className="App">
+   <div className="AppOutSide">
+      <div className="App">
+      <p style={{fontSize:"0.28rem"}}>游鱼星用户登陆授权</p>
       <input
         type="text"
         placeholder="用户名"
         ref={refusername}
         onChange={handleChange1}
+        className="inputs"
       />
       <input
         type="password"
         placeholder="密码"
         ref={refpassword}
         onChange={handleChange2}
+        className="inputs"
       />
-      <button onClick={login}>
+      <button onClick={login} className="button">
         登录
       </button>
       {isErr&&<div>登录错误</div>}
     </div>
+   </div>
   );
 };
 
