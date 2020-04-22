@@ -84,7 +84,7 @@ const App = () => {
       else{
         setIsErr(false);
         console.log(res)
-        window.location.href=`http://test.fishstar.xyz/callback?code=${res.code}`;
+        window.location.href=`${info.redirect_uri}/callback?code=${res.code}`;
       }
     })
   };
