@@ -92,7 +92,7 @@ const App = () => {
     console.log("start to auth");
     let info=getUrlParam()
     console.log(info)
-    fetch("http://www.fishstar.xyz:4003", {
+    fetch("http://www.fishstar.xyz:4003/register", {
       headers: {
         'Content-Type': 'application/json'
       },

@@ -38,6 +38,7 @@
   border-color: #fa911e;
 }
 .buttonLeft{
+  outline: none;
   width: 50%;
   height:100%;
   background-color: #fa911e;
@@ -50,6 +51,7 @@
   cursor: pointer;
 }
 .buttonRight{
+  outline: none;
   width: 50%;
   height:100%;
   background-color: #c4c3c3;
