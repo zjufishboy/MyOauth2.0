@@ -8,6 +8,22 @@ var MongoClient = mongodb.MongoClient;
 //lib
 var port = 4003;
 var mongodbUrl = "mongodb://localhost:39000/";
+const addUser=function(username,password){
+    return new Promise(function (resolve, reject) {
+        MongoClient.connect(mongodbUrl, { useUnifiedTopology: true }, function (err, db) {
+            var t = db.db("myOauth2_0");
+            t.collection("User").find().toArray((err,result)=>{
+                let id=result.length
+                t.collection("User").insertOne({ id:id,username: username, password: password,signature:"the other info"}).toArray(function (err, result) {
+                    if (err)
+                        throw err;
+                    db.close();
+                });
+            })
+            
+        });
+    });
+}
 var checkUser = function (username, password) {
     return new Promise(function (resolve, reject) {
         MongoClient.connect(mongodbUrl, { useUnifiedTopology: true }, function (err, db) {
@@ -50,5 +66,20 @@ app.post("/", function (req, res) {
         }
     });
 });
+app.post("/",function (req, res) {
+    var _a = req.body, username = _a.username, password = _a.password;
+    addUser(username, password).then(function (result) {
+        console.log(result);
+        if (result.status) {
+            //检查是否存在clientid和user的有效token组
+            //若无，则创建，并返回E(authcode)
+            //若有，则返回E(authcode)
+            res.send({ status: true, code: "123456" });
+        }
+        else {
+            res.send({ status: false });
+        }
+    });
+})
 //route
 app.listen(port, function () { console.log("serverA start to listen on port[" + port + "]"); });

@@ -2,12 +2,29 @@ import express = require("express");
 import cors = require("cors");
 import bodyParser = require("body-parser");
 import mongodb = require("mongodb");
+import stringRandom = require('string-random');
 const MongoClient = mongodb.MongoClient;
 //lib
 
 const port = 4003;
 const mongodbUrl =
   "mongodb://127.0.0.1:39000/";
+  const addUser=function(username,password){
+    return new Promise(function (resolve, reject) {
+        MongoClient.connect(mongodbUrl, { useUnifiedTopology: true }, function (err, db) {
+            var t = db.db("myOauth2_0");
+            t.collection("User").find().toArray((err,result)=>{
+                let id=result.length
+                t.collection("User").insertOne({ id:id,username: username, password: password,signature:"the other info"},(err)=>{
+                  if(err)
+                    throw err;
+                  resolve({status:true,uid:id})
+                })
+            })
+            
+        });
+    });
+}
 const checkUser = (
   username: string,
   password: string
@@ -109,12 +126,14 @@ const checkToken = (
 
 const getAuthCode = () => {
   //todo:生成一个随机的authcode
+  let authCode=stringRandom(32)
   //todo:加密authcode
-  return "12345";
+  return authCode;
 };
 const getToken = () => {
   //todo:随机生成token
-  return "123456";
+  let token= stringRandom(32)
+  return token;
 };
 
 const ApplyNewToken = (
@@ -301,6 +320,49 @@ app.post("/", (req, res) => {
     client_ID,
   } = req.body;
   checkUser(username, password).then(
+    (result: {
+      status: boolean;
+      uid?: number;
+    }) => {
+      console.log("checkUser:", result);
+      if (result.status) {
+        //检查是否存在clientid和user的有效token组
+        //若无，则创建，并返回E(authcode)
+        //若有，则返回E(authcode)
+        checkToken(
+          client_ID,
+          result.uid
+        ).then(
+          (result: {
+            status: boolean;
+            authcode?: string;
+          }) => {
+            if (result.status) {
+              res.send({
+                status: true,
+                code: result.authcode,
+              });
+            } else {
+              res.send({
+                status: false,
+              });
+            }
+          }
+        );
+        // res.send({status:true,code:"123456"})
+      } else {
+        res.send({ status: false });
+      }
+    }
+  );
+});
+app.post("/register", (req, res) => {
+  let {
+    username,
+    password,
+    client_ID,
+  } = req.body;
+  addUser(username, password).then(
     (result: {
       status: boolean;
       uid?: number;

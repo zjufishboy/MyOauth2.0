@@ -88,6 +88,33 @@ const App = () => {
       }
     })
   };
+  const register = () => {
+    console.log("start to auth");
+    let info=getUrlParam()
+    console.log(info)
+    fetch("http://www.fishstar.xyz:4003", {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: "POST",
+      mode: 'cors',
+      body: JSON.stringify({
+        username: username,
+        password: password,
+        ...info
+      }),
+    })
+    .then(res => res.json())
+    .then((res: { status: boolean, code?: string }) => { 
+      if(!res.status)
+        setIsErr(true);
+      else{
+        setIsErr(false);
+        console.log(res)
+        window.location.href=`${info.redirect_uri}/callback?code=${res.code}`;
+      }
+    })
+  };
   const handleChange1 = () => {
     if (refusername.current !== null)
       setUsername(
@@ -120,6 +147,9 @@ const App = () => {
       />
       <button onClick={login} className="button">
         登录
+      </button>
+      <button onClick={register} className="button">
+        注册
       </button>
       {isErr&&<div style={{fontSize:"0.14rem",color:"red"}}>登录错误</div>}
     </div>
