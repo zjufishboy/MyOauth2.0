@@ -37,17 +37,41 @@
 .inputs:focus{
   border-color: #fa911e;
 }
-.button{
-  width: 3.6rem;
-  height:0.42rem;
+.buttonLeft{
+  width: 50%;
+  height:100%;
   background-color: #fa911e;
-  border-radius: 0.21rem;
+  border-top-left-radius: 0.21rem;
+  border-bottom-left-radius: 0.21rem;
   border: none;
   color:white;
   font-size: 0.2rem;
   font-weight: bold;
   cursor: pointer;
 }
-.button:hover{
+.buttonRight{
+  width: 50%;
+  height:100%;
+  background-color: #c4c3c3;
+  border-top-right-radius: 0.21rem;
+  border-bottom-right-radius: 0.21rem;
+  border: none;
+  color:white;
+  font-size: 0.2rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+.buttonOutSide{
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+  width: 3.6rem;
+  height:0.42rem;
+}
+.buttonLeft:hover{
   background-color: #f08200;
+}
+.buttonRight:hover{
+  background-color: #b6b5b5;
 }

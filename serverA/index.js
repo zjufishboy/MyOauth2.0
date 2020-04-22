@@ -66,7 +66,7 @@ app.post("/", function (req, res) {
         }
     });
 });
-app.post("/",function (req, res) {
+app.post("/addUser",function (req, res) {
     var _a = req.body, username = _a.username, password = _a.password;
     addUser(username, password).then(function (result) {
         console.log(result);

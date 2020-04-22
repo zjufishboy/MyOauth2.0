@@ -145,12 +145,14 @@ const App = () => {
         onChange={handleChange2}
         className="inputs"
       />
-      <button onClick={login} className="button">
+      <div className="buttonOutSide">
+      <button onClick={login} className="buttonLeft">
         登录
       </button>
-      <button onClick={register} className="button">
+      <button onClick={register} className="buttonRight">
         注册
       </button>
+      </div>
       {isErr&&<div style={{fontSize:"0.14rem",color:"red"}}>登录错误</div>}
     </div>
    </div>
