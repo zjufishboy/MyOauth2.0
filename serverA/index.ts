@@ -5,25 +5,34 @@ import mongodb = require("mongodb");
 import stringRandom = require('string-random');
 const MongoClient = mongodb.MongoClient;
 //lib
-
+const config = {
+  url: {
+    mdb: "www.fishstar.xyz",
+    port: 39000
+  },
+  testUrl: {
+    mdb: "127.0.0.1",
+    port: 39000
+  },
+  envLevel: 1
+}
 const port = 4003;
-const mongodbUrl =
-  "mongodb://127.0.0.1:39000/";
-  const addUser=function(username,password){
-    return new Promise(function (resolve, reject) {
-        MongoClient.connect(mongodbUrl, { useUnifiedTopology: true }, function (err, db) {
-            var t = db.db("myOauth2_0");
-            t.collection("User").find().toArray((err,result)=>{
-                let id=result.length
-                t.collection("User").insertOne({ id:id,username: username, password: password,signature:"the other info"},(err)=>{
-                  if(err)
-                    throw err;
-                  resolve({status:true,uid:id})
-                })
-            })
-            
-        });
+const mongodbUrl = `mongodb://${config.envLevel === 0 ? config.testUrl.mdb : config.url.mdb}:${config.envLevel === 0 ? config.testUrl.port : config.url.port}`;
+const addUser = function (username, password) {
+  return new Promise(function (resolve, reject) {
+    MongoClient.connect(mongodbUrl, { useUnifiedTopology: true }, function (err, db) {
+      var t = db.db("myOauth2_0");
+      t.collection("User").find().toArray((err, result) => {
+        let id = result.length
+        t.collection("User").insertOne({ id: id, username: username, password: password, signature: "the other info" }, (err) => {
+          if (err)
+            throw err;
+          resolve({ status: true, uid: id })
+        })
+      })
+
     });
+  });
 }
 const checkUser = (
   username: string,
@@ -126,13 +135,13 @@ const checkToken = (
 
 const getAuthCode = () => {
   //todo:生成一个随机的authcode
-  let authCode=stringRandom(32)
+  let authCode = stringRandom(32)
   //todo:加密authcode
   return authCode;
 };
 const getToken = () => {
   //todo:随机生成token
-  let token= stringRandom(32)
+  let token = stringRandom(32)
   return token;
 };
 
@@ -156,7 +165,7 @@ const ApplyNewToken = (
             authCode,
             token_time: new Date(
               curDate.getTime() +
-                3600000
+              3600000
             ),
             token,
           };
@@ -206,15 +215,15 @@ const CheckApp = (
             .toArray((err, result) => {
               if (err) throw err;
               db.close();
-              checkAuthCode(client_ID,code).then((res:{status:boolean,token?:string})=>{
-                  if(res.status){
-                    resolve({status:true,token:res.token});
-                  }
-                  else{
-                    resolve({status:false});
-                  }
+              checkAuthCode(client_ID, code).then((res: { status: boolean, token?: string }) => {
+                if (res.status) {
+                  resolve({ status: true, token: res.token });
+                }
+                else {
+                  resolve({ status: false });
+                }
               })
-              
+
             });
         }
       );
@@ -222,68 +231,68 @@ const CheckApp = (
   );
 };
 
-const checkAuthCode=(client_ID:number,code:string)=>{
-    
-    return new Promise(
-        (resolve,reject)=>{
-            MongoClient.connect(
-                mongodbUrl,
-                {useUnifiedTopology:true},
-                (err,db)=>{
-                    let t=db.db("myOauth2_0");
-                    console.log("checkAuthCode:",client_ID,code);
-                    t.collection("Token").find({
-                        authCode:code,
-                        client_ID:client_ID,
-                        token_time: {
-                            $gte: new Date(),
-                        },
-                    }).toArray(
-                        (err, result) => {
-                            console.log("checkAuthCode:",result);
-                            if (err) throw err;
-                            db.close();
-                            if(result.length>0){
-                                let token=result[0].token;
-                                resolve({status:true,token});
-                            }
-                            else{
-                                resolve({status:false})
-                            }    
-                        });
-                });
+const checkAuthCode = (client_ID: number, code: string) => {
+
+  return new Promise(
+    (resolve, reject) => {
+      MongoClient.connect(
+        mongodbUrl,
+        { useUnifiedTopology: true },
+        (err, db) => {
+          let t = db.db("myOauth2_0");
+          console.log("checkAuthCode:", client_ID, code);
+          t.collection("Token").find({
+            authCode: code,
+            client_ID: client_ID,
+            token_time: {
+              $gte: new Date(),
+            },
+          }).toArray(
+            (err, result) => {
+              console.log("checkAuthCode:", result);
+              if (err) throw err;
+              db.close();
+              if (result.length > 0) {
+                let token = result[0].token;
+                resolve({ status: true, token });
+              }
+              else {
+                resolve({ status: false })
+              }
+            });
         });
+    });
 }
 
-const checkTokenValid=(token:string)=>{
-    return new Promise(
-        (resolve,reject)=>{
-            MongoClient.connect(
-                mongodbUrl,
-                {useUnifiedTopology:true},
-                (err,db)=>{
-                    let t=db.db("myOauth2_0");
-                    t.collection("Token").find({
-                        token,
-                        token_time: {
-                            $gte: new Date(),
-                        },
-                    }).toArray(
-                        (err, result) => {
-                            if (err) throw err;
-                            console.log("checkTokenValid:",result);
-                            db.close();
-                            if(result.length>0){
-                                let uid=result[0].uid;
-                                //这里应该返回资源，这里返回了
-                                resolve({status:true,uid});
-                            }
-                            else{
-                                resolve({status:false})
-                            }    
-                        });
-                });
+const checkTokenValid = (token: string) => {
+  return new Promise(
+    (resolve, reject) => {
+      MongoClient.connect(
+        mongodbUrl,
+        { useUnifiedTopology: true },
+        (err, db) => {
+          let t = db.db("myOauth2_0");
+          t.collection("Token").find({
+            token,
+            token_time: {
+              $gte: new Date(),
+            },
+          }).toArray(
+            (err, result) => {
+              if (err) throw err;
+              console.log("checkTokenValid:", result);
+              db.close();
+              if (result.length > 0) {
+                let uid = result[0].uid;
+                //这里应该返回资源，这里返回了
+                resolve({ status: true, uid });
+              }
+              else {
+                resolve({ status: false })
+              }
+            });
         });
+    });
 }
 
 //config
@@ -301,16 +310,16 @@ app.use(bodyParser.json());
 
 //
 
-interface query{
-    client_ID:string,
-    client_secret:string,
-    code:string
+interface query {
+  client_ID: string,
+  client_secret: string,
+  code: string
 }
-app.get("/token", (req:{query:query}, res) => {
-  let {client_ID,client_secret,code}=req.query;
+app.get("/token", (req: { query: query }, res) => {
+  let { client_ID, client_secret, code } = req.query;
   console.log(req.query)
-  CheckApp(parseInt(client_ID),client_secret,code)
-  .then((result)=>{res.send(result)});
+  CheckApp(parseInt(client_ID), client_secret, code)
+    .then((result) => { res.send(result) });
 });
 
 app.post("/", (req, res) => {
@@ -400,12 +409,15 @@ app.post("/register", (req, res) => {
   );
 });
 
-app.post("/userinfo",(req,res)=>{
-    let token=req.body.token;
-    checkTokenValid(token)
-    .then(result=>res.send(result))
+app.post("/userinfo", (req, res) => {
+  let token = req.body.token;
+  checkTokenValid(token)
+    .then(result => res.send(result))
 })
 
+app.get("/test", (req, res) => {
+  res.send("test")
+})
 //route
 
 app.listen(port, () => {
